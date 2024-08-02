@@ -1,5 +1,25 @@
 workflows:
-  sample-workflow:
-    name: Codemagic Sample Workflow
-    max_build_duration: 120
-    instance_type: mac_mini_m1
+  react_native_ios:
+    name: React Native iOS Workflow
+    environment:
+      node: 16.13.0 # Node.js sürümü
+      xcode: latest # Xcode sürümü
+    scripts:
+      - name: Install dependencies
+        script: yarn install
+      - name: Bundle React Native code and images
+        script: |
+          npx react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios
+      - name: Install CocoaPods dependencies
+        script: |
+          cd ios
+          pod install
+      - name: Build iOS
+        script: |
+          xcodebuild -workspace ios/YourProjectName.xcworkspace -scheme YourProjectName -configuration Release -sdk iphoneos -derivedDataPath ios/build
+    artifacts:
+      - build/ios/ipa
+    publishing:
+      email:
+        recipients:
+          - erayberat37@gmail.com
