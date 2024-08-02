@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:  # Manuel tetikleme için eklenen olay
 
 jobs:
   build:
@@ -16,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18.x'  # Güncellenmiş Node.js sürümü
+          node-version: '18.x'
 
       - name: Install dependencies
         run: npm install
@@ -25,7 +26,6 @@ jobs:
         run: |
           cd ios
           pod install
-        working-directory: ios
 
       - name: Build iOS
         run: |
